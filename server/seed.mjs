@@ -1,10 +1,11 @@
-import { Part } from '../../app/core/models/part.model';
+import { openDb, insertPart, countParts } from './db.mjs';
 
-const img = (seed: string) =>
+const img = (seed) =>
   `https://picsum.photos/seed/${encodeURIComponent(seed)}/400/300`;
 
-export const MOCK_PARTS: Part[] = [
-  // CPUs — modern strong desktop (workstation / parallel compile)
+/** Modern workstation-oriented catalog (desktop AMD + Intel, matching platforms). */
+export const SEED_PARTS = [
+  // --- CPUs (strong desktop, not Threadripper/server) ---
   {
     id: 'cpu-ryzen-9-9950x',
     category: 'cpu',
@@ -129,7 +130,7 @@ export const MOCK_PARTS: Part[] = [
     imageUrl: img('cpu-i9-14900k'),
   },
 
-  // Motherboards
+  // --- Motherboards (AM5, LGA1851, LGA1700) ---
   {
     id: 'mb-b650-tomahawk',
     category: 'motherboard',
@@ -206,21 +207,6 @@ export const MOCK_PARTS: Part[] = [
     imageUrl: img('mb-z890-tomahawk'),
   },
   {
-    id: 'mb-b760m-mortar',
-    category: 'motherboard',
-    name: 'MAG B760M Mortar WiFi',
-    brand: 'MSI',
-    price: 189,
-    specs: {
-      socket: 'LGA1700',
-      chipset: 'B760',
-      formFactor: 'mATX',
-      ramType: 'DDR5',
-      maxRamGb: 192,
-    },
-    imageUrl: img('mb-b760m'),
-  },
-  {
     id: 'mb-z790-aorus',
     category: 'motherboard',
     name: 'Z790 AORUS Elite AX',
@@ -236,19 +222,14 @@ export const MOCK_PARTS: Part[] = [
     imageUrl: img('mb-z790'),
   },
 
-  // Memory
+  // --- Memory ---
   {
     id: 'ram-corsair-32-6000',
     category: 'memory',
     name: 'Vengeance 32GB (2x16) DDR5-6000',
     brand: 'Corsair',
     price: 119,
-    specs: {
-      ramType: 'DDR5',
-      capacityGb: 32,
-      speedMt: 6000,
-      modules: 2,
-    },
+    specs: { ramType: 'DDR5', capacityGb: 32, speedMt: 6000, modules: 2 },
     imageUrl: img('ram-corsair-32'),
   },
   {
@@ -257,12 +238,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'Trident Z5 Neo RGB 32GB DDR5-6400',
     brand: 'G.Skill',
     price: 149,
-    specs: {
-      ramType: 'DDR5',
-      capacityGb: 32,
-      speedMt: 6400,
-      modules: 2,
-    },
+    specs: { ramType: 'DDR5', capacityGb: 32, speedMt: 6400, modules: 2 },
     imageUrl: img('ram-gskill-32'),
   },
   {
@@ -271,42 +247,27 @@ export const MOCK_PARTS: Part[] = [
     name: 'Fury Beast 64GB (2x32) DDR5-5600',
     brand: 'Kingston',
     price: 209,
-    specs: {
-      ramType: 'DDR5',
-      capacityGb: 64,
-      speedMt: 5600,
-      modules: 2,
-    },
+    specs: { ramType: 'DDR5', capacityGb: 64, speedMt: 5600, modules: 2 },
     imageUrl: img('ram-kingston-64'),
   },
   {
-    id: 'ram-corsair-16-3200',
+    id: 'ram-gskill-96-6000',
     category: 'memory',
-    name: 'Vengeance LPX 16GB (2x8) DDR4-3200',
-    brand: 'Corsair',
-    price: 49,
-    specs: {
-      ramType: 'DDR4',
-      capacityGb: 16,
-      speedMt: 3200,
-      modules: 2,
-    },
-    imageUrl: img('ram-corsair-16-ddr4'),
+    name: 'Trident Z5 RGB 96GB (2x48) DDR5-6000',
+    brand: 'G.Skill',
+    price: 349,
+    specs: { ramType: 'DDR5', capacityGb: 96, speedMt: 6000, modules: 2 },
+    imageUrl: img('ram-gskill-96'),
   },
 
-  // Storage
+  // --- Storage ---
   {
     id: 'ssd-970-1tb',
     category: 'storage',
     name: '990 PRO 1TB NVMe',
     brand: 'Samsung',
     price: 109,
-    specs: {
-      type: 'NVMe SSD',
-      capacityGb: 1000,
-      interface: 'PCIe 4.0',
-      readMBs: 7450,
-    },
+    specs: { type: 'NVMe SSD', capacityGb: 1000, interface: 'PCIe 4.0', readMBs: 7450 },
     imageUrl: img('ssd-990'),
   },
   {
@@ -315,12 +276,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'WD Black SN850X 2TB',
     brand: 'Western Digital',
     price: 169,
-    specs: {
-      type: 'NVMe SSD',
-      capacityGb: 2000,
-      interface: 'PCIe 4.0',
-      readMBs: 7300,
-    },
+    specs: { type: 'NVMe SSD', capacityGb: 2000, interface: 'PCIe 4.0', readMBs: 7300 },
     imageUrl: img('ssd-sn850x'),
   },
   {
@@ -329,42 +285,27 @@ export const MOCK_PARTS: Part[] = [
     name: 'T500 4TB NVMe',
     brand: 'Crucial',
     price: 349,
-    specs: {
-      type: 'NVMe SSD',
-      capacityGb: 4000,
-      interface: 'PCIe 4.0',
-      readMBs: 7400,
-    },
+    specs: { type: 'NVMe SSD', capacityGb: 4000, interface: 'PCIe 4.0', readMBs: 7400 },
     imageUrl: img('ssd-t500'),
   },
   {
-    id: 'hdd-seagate-4tb',
+    id: 'ssd-990-4tb',
     category: 'storage',
-    name: 'Barracuda 4TB 7200RPM',
-    brand: 'Seagate',
-    price: 89,
-    specs: {
-      type: 'HDD',
-      capacityGb: 4000,
-      interface: 'SATA',
-      rpm: 7200,
-    },
-    imageUrl: img('hdd-barracuda'),
+    name: '990 PRO 4TB NVMe',
+    brand: 'Samsung',
+    price: 329,
+    specs: { type: 'NVMe SSD', capacityGb: 4000, interface: 'PCIe 4.0', readMBs: 7450 },
+    imageUrl: img('ssd-990-4tb'),
   },
 
-  // GPUs (optional)
+  // --- GPUs ---
   {
     id: 'gpu-4070-super',
     category: 'gpu',
     name: 'GeForce RTX 4070 SUPER',
     brand: 'NVIDIA',
     price: 599,
-    specs: {
-      vramGb: 12,
-      tdpW: 220,
-      lengthMm: 267,
-      ports: '3x DP, 1x HDMI',
-    },
+    specs: { vramGb: 12, tdpW: 220, lengthMm: 267, ports: '3x DP, 1x HDMI' },
     imageUrl: img('gpu-4070s'),
   },
   {
@@ -373,12 +314,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'GeForce RTX 4080 SUPER',
     brand: 'NVIDIA',
     price: 999,
-    specs: {
-      vramGb: 16,
-      tdpW: 320,
-      lengthMm: 304,
-      ports: '3x DP, 1x HDMI',
-    },
+    specs: { vramGb: 16, tdpW: 320, lengthMm: 304, ports: '3x DP, 1x HDMI' },
     imageUrl: img('gpu-4080s'),
   },
   {
@@ -387,56 +323,27 @@ export const MOCK_PARTS: Part[] = [
     name: 'Radeon RX 7900 XT',
     brand: 'AMD',
     price: 749,
-    specs: {
-      vramGb: 20,
-      tdpW: 300,
-      lengthMm: 287,
-      ports: '2x DP, 1x HDMI, 1x USB-C',
-    },
+    specs: { vramGb: 20, tdpW: 300, lengthMm: 287, ports: '2x DP, 1x HDMI, 1x USB-C' },
     imageUrl: img('gpu-7900xt'),
   },
   {
-    id: 'gpu-4060',
+    id: 'gpu-5090',
     category: 'gpu',
-    name: 'GeForce RTX 4060',
+    name: 'GeForce RTX 5090',
     brand: 'NVIDIA',
-    price: 299,
-    specs: {
-      vramGb: 8,
-      tdpW: 115,
-      lengthMm: 242,
-      ports: '3x DP, 1x HDMI',
-    },
-    imageUrl: img('gpu-4060'),
+    price: 1999,
+    specs: { vramGb: 32, tdpW: 575, lengthMm: 304, ports: '3x DP, 1x HDMI' },
+    imageUrl: img('gpu-5090'),
   },
 
-  // PSUs
-  {
-    id: 'psu-rm750e',
-    category: 'psu',
-    name: 'RM750e 750W 80+ Gold',
-    brand: 'Corsair',
-    price: 119,
-    specs: {
-      wattage: 750,
-      efficiency: '80+ Gold',
-      modular: 'Fully',
-      formFactor: 'ATX',
-    },
-    imageUrl: img('psu-rm750e'),
-  },
+  // --- PSUs ---
   {
     id: 'psu-rm850x',
     category: 'psu',
     name: 'RM850x 850W 80+ Gold',
     brand: 'Corsair',
     price: 149,
-    specs: {
-      wattage: 850,
-      efficiency: '80+ Gold',
-      modular: 'Fully',
-      formFactor: 'ATX',
-    },
+    specs: { wattage: 850, efficiency: '80+ Gold', modular: 'Fully', formFactor: 'ATX' },
     imageUrl: img('psu-rm850x'),
   },
   {
@@ -445,12 +352,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'Focus GX-1000 1000W 80+ Gold',
     brand: 'Seasonic',
     price: 189,
-    specs: {
-      wattage: 1000,
-      efficiency: '80+ Gold',
-      modular: 'Fully',
-      formFactor: 'ATX',
-    },
+    specs: { wattage: 1000, efficiency: '80+ Gold', modular: 'Fully', formFactor: 'ATX' },
     imageUrl: img('psu-focus-1000'),
   },
   {
@@ -459,16 +361,20 @@ export const MOCK_PARTS: Part[] = [
     name: 'ROG Thor 1200W Platinum II',
     brand: 'ASUS',
     price: 329,
-    specs: {
-      wattage: 1200,
-      efficiency: '80+ Platinum',
-      modular: 'Fully',
-      formFactor: 'ATX',
-    },
+    specs: { wattage: 1200, efficiency: '80+ Platinum', modular: 'Fully', formFactor: 'ATX' },
     imageUrl: img('psu-thor-1200'),
   },
+  {
+    id: 'psu-hx1500i',
+    category: 'psu',
+    name: 'HX1500i 1500W 80+ Platinum',
+    brand: 'Corsair',
+    price: 449,
+    specs: { wattage: 1500, efficiency: '80+ Platinum', modular: 'Fully', formFactor: 'ATX' },
+    imageUrl: img('psu-hx1500i'),
+  },
 
-  // Cases
+  // --- Cases ---
   {
     id: 'case-4000d',
     category: 'case',
@@ -512,33 +418,28 @@ export const MOCK_PARTS: Part[] = [
     imageUrl: img('case-meshify'),
   },
   {
-    id: 'case-nr200',
+    id: 'case-o11d-evo',
     category: 'case',
-    name: 'NR200P V2',
-    brand: 'Cooler Master',
-    price: 119,
+    name: 'O11 Dynamic EVO',
+    brand: 'Lian Li',
+    price: 169,
     specs: {
-      formFactor: 'mITX',
-      maxCoolerHeightMm: 155,
-      gpuLengthMm: 336,
-      sidePanel: 'Tempered glass / Mesh',
+      formFactor: 'ATX',
+      maxCoolerHeightMm: 167,
+      gpuLengthMm: 420,
+      sidePanel: 'Tempered glass',
     },
-    imageUrl: img('case-nr200'),
+    imageUrl: img('case-o11d-evo'),
   },
 
-  // Cooling
+  // --- Cooling ---
   {
     id: 'cool-peerless-assassin',
     category: 'cooling',
     name: 'Peerless Assassin 120 SE',
     brand: 'Thermalright',
     price: 35,
-    specs: {
-      type: 'Air',
-      coolerHeightMm: 155,
-      tdpW: 220,
-      fans: 2,
-    },
+    specs: { type: 'Air', coolerHeightMm: 155, tdpW: 220, fans: 2 },
     imageUrl: img('cool-pa120'),
   },
   {
@@ -547,12 +448,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'NH-D15 chromax.black',
     brand: 'Noctua',
     price: 119,
-    specs: {
-      type: 'Air',
-      coolerHeightMm: 165,
-      tdpW: 250,
-      fans: 2,
-    },
+    specs: { type: 'Air', coolerHeightMm: 165, tdpW: 250, fans: 2 },
     imageUrl: img('cool-nhd15'),
   },
   {
@@ -561,13 +457,7 @@ export const MOCK_PARTS: Part[] = [
     name: 'Kraken 240 RGB',
     brand: 'NZXT',
     price: 149,
-    specs: {
-      type: 'AIO',
-      radiatorMm: 240,
-      coolerHeightMm: 55,
-      tdpW: 280,
-      fans: 2,
-    },
+    specs: { type: 'AIO', radiatorMm: 240, coolerHeightMm: 55, tdpW: 280, fans: 2 },
     imageUrl: img('cool-kraken240'),
   },
   {
@@ -576,13 +466,25 @@ export const MOCK_PARTS: Part[] = [
     name: 'Liquid Freezer III 360',
     brand: 'Arctic',
     price: 99,
-    specs: {
-      type: 'AIO',
-      radiatorMm: 360,
-      coolerHeightMm: 55,
-      tdpW: 300,
-      fans: 3,
-    },
+    specs: { type: 'AIO', radiatorMm: 360, coolerHeightMm: 55, tdpW: 300, fans: 3 },
     imageUrl: img('cool-arctic360'),
   },
 ];
+
+export function seedIfEmpty(db) {
+  if (countParts(db) > 0) return { seeded: false, count: countParts(db) };
+  const insertMany = db.transaction((parts) => {
+    for (const p of parts) insertPart(db, p);
+  });
+  insertMany(SEED_PARTS);
+  return { seeded: true, count: countParts(db) };
+}
+
+export function reseed(db) {
+  db.exec('DELETE FROM parts');
+  const insertMany = db.transaction((parts) => {
+    for (const p of parts) insertPart(db, p);
+  });
+  insertMany(SEED_PARTS);
+  return { seeded: true, count: countParts(db) };
+}
