@@ -43,8 +43,3 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Local SQLite DB (API data — do not commit)
-/server/data/*.db
-/server/data/*.db-journal
-/server/data/*.db-wal
-/server/data/*.db-shm

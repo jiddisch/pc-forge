@@ -1,10 +1,9 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
-import { environment } from './environments/environment';
 
 async function prepareApp() {
-  if (environment.useMsw && typeof Worker !== 'undefined') {
+  if (typeof Worker !== 'undefined') {
     const { worker } = await import('./mocks/browser');
     await worker.start({
       onUnhandledRequest: 'bypass',

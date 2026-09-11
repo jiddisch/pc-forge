@@ -1,0 +1,553 @@
+[
+  {
+    "id": "cpu-ryzen-9-9950x",
+    "category": "cpu",
+    "name": "Ryzen 9 9950X",
+    "brand": "AMD",
+    "price": 549,
+    "specs": {
+      "socket": "AM5",
+      "cores": 16,
+      "threads": 32,
+      "boostGHz": 5.7,
+      "tdpW": 170,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-r9-9950x/400/300"
+  },
+  {
+    "id": "cpu-ryzen-9-9900x",
+    "category": "cpu",
+    "name": "Ryzen 9 9900X",
+    "brand": "AMD",
+    "price": 429,
+    "specs": {
+      "socket": "AM5",
+      "cores": 12,
+      "threads": 24,
+      "boostGHz": 5.6,
+      "tdpW": 120,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-r9-9900x/400/300"
+  },
+  {
+    "id": "cpu-ryzen-9-7950x",
+    "category": "cpu",
+    "name": "Ryzen 9 7950X",
+    "brand": "AMD",
+    "price": 449,
+    "specs": {
+      "socket": "AM5",
+      "cores": 16,
+      "threads": 32,
+      "boostGHz": 5.7,
+      "tdpW": 170,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-r9-7950x/400/300"
+  },
+  {
+    "id": "cpu-ryzen-7-9700x",
+    "category": "cpu",
+    "name": "Ryzen 7 9700X",
+    "brand": "AMD",
+    "price": 329,
+    "specs": {
+      "socket": "AM5",
+      "cores": 8,
+      "threads": 16,
+      "boostGHz": 5.5,
+      "tdpW": 65,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-r7-9700x/400/300"
+  },
+  {
+    "id": "cpu-ultra-9-285k",
+    "category": "cpu",
+    "name": "Core Ultra 9 285K",
+    "brand": "Intel",
+    "price": 589,
+    "specs": {
+      "socket": "LGA1851",
+      "cores": 24,
+      "threads": 24,
+      "pCores": 8,
+      "eCores": 16,
+      "boostGHz": 5.7,
+      "tdpW": 125,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-ultra9-285k/400/300"
+  },
+  {
+    "id": "cpu-ultra-7-265k",
+    "category": "cpu",
+    "name": "Core Ultra 7 265K",
+    "brand": "Intel",
+    "price": 399,
+    "specs": {
+      "socket": "LGA1851",
+      "cores": 20,
+      "threads": 20,
+      "pCores": 8,
+      "eCores": 12,
+      "boostGHz": 5.5,
+      "tdpW": 125,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-ultra7-265k/400/300"
+  },
+  {
+    "id": "cpu-i9-14900k",
+    "category": "cpu",
+    "name": "Core i9-14900K",
+    "brand": "Intel",
+    "price": 449,
+    "specs": {
+      "socket": "LGA1700",
+      "cores": 24,
+      "threads": 32,
+      "boostGHz": 6,
+      "tdpW": 125,
+      "integratedGraphics": true,
+      "ramType": "DDR5"
+    },
+    "imageUrl": "https://picsum.photos/seed/cpu-i9-14900k/400/300"
+  },
+  {
+    "id": "mb-b650-tomahawk",
+    "category": "motherboard",
+    "name": "MAG B650 Tomahawk WiFi",
+    "brand": "MSI",
+    "price": 219,
+    "specs": {
+      "socket": "AM5",
+      "chipset": "B650",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 128
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-b650/400/300"
+  },
+  {
+    "id": "mb-x670e-hero",
+    "category": "motherboard",
+    "name": "ROG Strix X670E-E Gaming WiFi",
+    "brand": "ASUS",
+    "price": 499,
+    "specs": {
+      "socket": "AM5",
+      "chipset": "X670E",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 192
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-x670e/400/300"
+  },
+  {
+    "id": "mb-x870e-hero",
+    "category": "motherboard",
+    "name": "ROG Crosshair X870E Hero",
+    "brand": "ASUS",
+    "price": 699,
+    "specs": {
+      "socket": "AM5",
+      "chipset": "X870E",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 192
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-x870e/400/300"
+  },
+  {
+    "id": "mb-z890-aorus",
+    "category": "motherboard",
+    "name": "Z890 AORUS Master",
+    "brand": "Gigabyte",
+    "price": 499,
+    "specs": {
+      "socket": "LGA1851",
+      "chipset": "Z890",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 256
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-z890/400/300"
+  },
+  {
+    "id": "mb-z890-tomahawk",
+    "category": "motherboard",
+    "name": "MAG Z890 Tomahawk WiFi",
+    "brand": "MSI",
+    "price": 349,
+    "specs": {
+      "socket": "LGA1851",
+      "chipset": "Z890",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 256
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-z890-tomahawk/400/300"
+  },
+  {
+    "id": "mb-z790-aorus",
+    "category": "motherboard",
+    "name": "Z790 AORUS Elite AX",
+    "brand": "Gigabyte",
+    "price": 269,
+    "specs": {
+      "socket": "LGA1700",
+      "chipset": "Z790",
+      "formFactor": "ATX",
+      "ramType": "DDR5",
+      "maxRamGb": 192
+    },
+    "imageUrl": "https://picsum.photos/seed/mb-z790/400/300"
+  },
+  {
+    "id": "ram-corsair-32-6000",
+    "category": "memory",
+    "name": "Vengeance 32GB (2x16) DDR5-6000",
+    "brand": "Corsair",
+    "price": 119,
+    "specs": {
+      "ramType": "DDR5",
+      "capacityGb": 32,
+      "speedMt": 6000,
+      "modules": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/ram-corsair-32/400/300"
+  },
+  {
+    "id": "ram-gskill-32-6400",
+    "category": "memory",
+    "name": "Trident Z5 Neo RGB 32GB DDR5-6400",
+    "brand": "G.Skill",
+    "price": 149,
+    "specs": {
+      "ramType": "DDR5",
+      "capacityGb": 32,
+      "speedMt": 6400,
+      "modules": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/ram-gskill-32/400/300"
+  },
+  {
+    "id": "ram-kingston-64-5600",
+    "category": "memory",
+    "name": "Fury Beast 64GB (2x32) DDR5-5600",
+    "brand": "Kingston",
+    "price": 209,
+    "specs": {
+      "ramType": "DDR5",
+      "capacityGb": 64,
+      "speedMt": 5600,
+      "modules": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/ram-kingston-64/400/300"
+  },
+  {
+    "id": "ram-gskill-96-6000",
+    "category": "memory",
+    "name": "Trident Z5 RGB 96GB (2x48) DDR5-6000",
+    "brand": "G.Skill",
+    "price": 349,
+    "specs": {
+      "ramType": "DDR5",
+      "capacityGb": 96,
+      "speedMt": 6000,
+      "modules": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/ram-gskill-96/400/300"
+  },
+  {
+    "id": "ssd-970-1tb",
+    "category": "storage",
+    "name": "990 PRO 1TB NVMe",
+    "brand": "Samsung",
+    "price": 109,
+    "specs": {
+      "type": "NVMe SSD",
+      "capacityGb": 1000,
+      "interface": "PCIe 4.0",
+      "readMBs": 7450
+    },
+    "imageUrl": "https://picsum.photos/seed/ssd-990/400/300"
+  },
+  {
+    "id": "ssd-sn850x-2tb",
+    "category": "storage",
+    "name": "WD Black SN850X 2TB",
+    "brand": "Western Digital",
+    "price": 169,
+    "specs": {
+      "type": "NVMe SSD",
+      "capacityGb": 2000,
+      "interface": "PCIe 4.0",
+      "readMBs": 7300
+    },
+    "imageUrl": "https://picsum.photos/seed/ssd-sn850x/400/300"
+  },
+  {
+    "id": "ssd-crucial-4tb",
+    "category": "storage",
+    "name": "T500 4TB NVMe",
+    "brand": "Crucial",
+    "price": 349,
+    "specs": {
+      "type": "NVMe SSD",
+      "capacityGb": 4000,
+      "interface": "PCIe 4.0",
+      "readMBs": 7400
+    },
+    "imageUrl": "https://picsum.photos/seed/ssd-t500/400/300"
+  },
+  {
+    "id": "ssd-990-4tb",
+    "category": "storage",
+    "name": "990 PRO 4TB NVMe",
+    "brand": "Samsung",
+    "price": 329,
+    "specs": {
+      "type": "NVMe SSD",
+      "capacityGb": 4000,
+      "interface": "PCIe 4.0",
+      "readMBs": 7450
+    },
+    "imageUrl": "https://picsum.photos/seed/ssd-990-4tb/400/300"
+  },
+  {
+    "id": "gpu-4070-super",
+    "category": "gpu",
+    "name": "GeForce RTX 4070 SUPER",
+    "brand": "NVIDIA",
+    "price": 599,
+    "specs": {
+      "vramGb": 12,
+      "tdpW": 220,
+      "lengthMm": 267,
+      "ports": "3x DP, 1x HDMI"
+    },
+    "imageUrl": "https://picsum.photos/seed/gpu-4070s/400/300"
+  },
+  {
+    "id": "gpu-4080-super",
+    "category": "gpu",
+    "name": "GeForce RTX 4080 SUPER",
+    "brand": "NVIDIA",
+    "price": 999,
+    "specs": {
+      "vramGb": 16,
+      "tdpW": 320,
+      "lengthMm": 304,
+      "ports": "3x DP, 1x HDMI"
+    },
+    "imageUrl": "https://picsum.photos/seed/gpu-4080s/400/300"
+  },
+  {
+    "id": "gpu-7900xt",
+    "category": "gpu",
+    "name": "Radeon RX 7900 XT",
+    "brand": "AMD",
+    "price": 749,
+    "specs": {
+      "vramGb": 20,
+      "tdpW": 300,
+      "lengthMm": 287,
+      "ports": "2x DP, 1x HDMI, 1x USB-C"
+    },
+    "imageUrl": "https://picsum.photos/seed/gpu-7900xt/400/300"
+  },
+  {
+    "id": "gpu-5090",
+    "category": "gpu",
+    "name": "GeForce RTX 5090",
+    "brand": "NVIDIA",
+    "price": 1999,
+    "specs": {
+      "vramGb": 32,
+      "tdpW": 575,
+      "lengthMm": 304,
+      "ports": "3x DP, 1x HDMI"
+    },
+    "imageUrl": "https://picsum.photos/seed/gpu-5090/400/300"
+  },
+  {
+    "id": "psu-rm850x",
+    "category": "psu",
+    "name": "RM850x 850W 80+ Gold",
+    "brand": "Corsair",
+    "price": 149,
+    "specs": {
+      "wattage": 850,
+      "efficiency": "80+ Gold",
+      "modular": "Fully",
+      "formFactor": "ATX"
+    },
+    "imageUrl": "https://picsum.photos/seed/psu-rm850x/400/300"
+  },
+  {
+    "id": "psu-focus-1000",
+    "category": "psu",
+    "name": "Focus GX-1000 1000W 80+ Gold",
+    "brand": "Seasonic",
+    "price": 189,
+    "specs": {
+      "wattage": 1000,
+      "efficiency": "80+ Gold",
+      "modular": "Fully",
+      "formFactor": "ATX"
+    },
+    "imageUrl": "https://picsum.photos/seed/psu-focus-1000/400/300"
+  },
+  {
+    "id": "psu-rog-1200",
+    "category": "psu",
+    "name": "ROG Thor 1200W Platinum II",
+    "brand": "ASUS",
+    "price": 329,
+    "specs": {
+      "wattage": 1200,
+      "efficiency": "80+ Platinum",
+      "modular": "Fully",
+      "formFactor": "ATX"
+    },
+    "imageUrl": "https://picsum.photos/seed/psu-thor-1200/400/300"
+  },
+  {
+    "id": "psu-hx1500i",
+    "category": "psu",
+    "name": "HX1500i 1500W 80+ Platinum",
+    "brand": "Corsair",
+    "price": 449,
+    "specs": {
+      "wattage": 1500,
+      "efficiency": "80+ Platinum",
+      "modular": "Fully",
+      "formFactor": "ATX"
+    },
+    "imageUrl": "https://picsum.photos/seed/psu-hx1500i/400/300"
+  },
+  {
+    "id": "case-4000d",
+    "category": "case",
+    "name": "4000D Airflow",
+    "brand": "Corsair",
+    "price": 104,
+    "specs": {
+      "formFactor": "ATX",
+      "maxCoolerHeightMm": 170,
+      "gpuLengthMm": 360,
+      "sidePanel": "Tempered glass"
+    },
+    "imageUrl": "https://picsum.photos/seed/case-4000d/400/300"
+  },
+  {
+    "id": "case-lancool-216",
+    "category": "case",
+    "name": "Lancool 216 RGB",
+    "brand": "Lian Li",
+    "price": 109,
+    "specs": {
+      "formFactor": "ATX",
+      "maxCoolerHeightMm": 180,
+      "gpuLengthMm": 392,
+      "sidePanel": "Tempered glass"
+    },
+    "imageUrl": "https://picsum.photos/seed/case-lancool/400/300"
+  },
+  {
+    "id": "case-meshify-2",
+    "category": "case",
+    "name": "Meshify 2 Compact",
+    "brand": "Fractal Design",
+    "price": 129,
+    "specs": {
+      "formFactor": "ATX",
+      "maxCoolerHeightMm": 169,
+      "gpuLengthMm": 360,
+      "sidePanel": "Tempered glass"
+    },
+    "imageUrl": "https://picsum.photos/seed/case-meshify/400/300"
+  },
+  {
+    "id": "case-o11d-evo",
+    "category": "case",
+    "name": "O11 Dynamic EVO",
+    "brand": "Lian Li",
+    "price": 169,
+    "specs": {
+      "formFactor": "ATX",
+      "maxCoolerHeightMm": 167,
+      "gpuLengthMm": 420,
+      "sidePanel": "Tempered glass"
+    },
+    "imageUrl": "https://picsum.photos/seed/case-o11d-evo/400/300"
+  },
+  {
+    "id": "cool-peerless-assassin",
+    "category": "cooling",
+    "name": "Peerless Assassin 120 SE",
+    "brand": "Thermalright",
+    "price": 35,
+    "specs": {
+      "type": "Air",
+      "coolerHeightMm": 155,
+      "tdpW": 220,
+      "fans": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/cool-pa120/400/300"
+  },
+  {
+    "id": "cool-nh-d15",
+    "category": "cooling",
+    "name": "NH-D15 chromax.black",
+    "brand": "Noctua",
+    "price": 119,
+    "specs": {
+      "type": "Air",
+      "coolerHeightMm": 165,
+      "tdpW": 250,
+      "fans": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/cool-nhd15/400/300"
+  },
+  {
+    "id": "cool-kraken-240",
+    "category": "cooling",
+    "name": "Kraken 240 RGB",
+    "brand": "NZXT",
+    "price": 149,
+    "specs": {
+      "type": "AIO",
+      "radiatorMm": 240,
+      "coolerHeightMm": 55,
+      "tdpW": 280,
+      "fans": 2
+    },
+    "imageUrl": "https://picsum.photos/seed/cool-kraken240/400/300"
+  },
+  {
+    "id": "cool-arctic-360",
+    "category": "cooling",
+    "name": "Liquid Freezer III 360",
+    "brand": "Arctic",
+    "price": 99,
+    "specs": {
+      "type": "AIO",
+      "radiatorMm": 360,
+      "coolerHeightMm": 55,
+      "tdpW": 300,
+      "fans": 3
+    },
+    "imageUrl": "https://picsum.photos/seed/cool-arctic360/400/300"
+  }
+]

@@ -9,9 +9,7 @@
     "test": "ng test",
     "build:pages": "ng build --configuration=production --base-href=/pc-forge/ && cp dist/pc-forge/browser/index.html dist/pc-forge/browser/404.html",
     "deploy:pages": "npm run build:pages && npx angular-cli-ghpages --dir=dist/pc-forge/browser --no-silent",
-    "api": "node server/index.mjs",
-    "api:seed": "node server/run-seed.mjs --force",
-    "parts:add": "node server/cli/add-part.mjs"
+    "parts:add": "node scripts/add-part.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
@@ -26,9 +24,6 @@
     "@angular/platform-browser": "^22.1.0",
     "@angular/router": "^22.1.0",
     "@angular/service-worker": "^22.1.0",
-    "better-sqlite3": "^13.0.3",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -37,9 +32,6 @@
     "@angular/cli": "^22.1.8",
     "@angular/compiler-cli": "^22.1.0",
     "@tailwindcss/postcss": "^4.1.12",
-    "@types/better-sqlite3": "^9.6.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
     "jsdom": "^28.0.0",
     "msw": "^2.15.0",
     "postcss": "^8.5.3",

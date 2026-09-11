@@ -9,22 +9,12 @@ Angular web app for building a desktop PC from base components (CPU, motherboard
 - **Node.js 22.22.3+**
 - npm 10+
 
-## Quick start (local API + frontend)
+## Quick start
 
-Local development uses a tiny **Express + SQLite** API. GitHub Pages still uses **MSW** (no public API yet).
-
-Terminal 1 — API (creates `server/data/pc-forge.db` and seeds on first run):
+Catalog data lives in a static JSON file — no API server required.
 
 ```bash
 npm install
-npm run api
-```
-
-API listens on http://localhost:3000 (falls back to 3333 if busy).
-
-Terminal 2 — Angular (proxies `/api` → Express; MSW disabled in development):
-
-```bash
 npm start
 ```
 
@@ -33,13 +23,7 @@ Open http://localhost:4200/
 - Home: landing overview
 - Builder: pick parts by category, filter with signal forms, see live total + compatibility hints
 
-### Sample API calls
-
-```bash
-curl 'http://localhost:3000/api/parts?category=cpu'
-curl 'http://localhost:3000/api/parts/cpu-ryzen-9-9950x'
-curl 'http://localhost:3000/api/categories'
-```
+MSW is always enabled (local and production). It serves `/api/*` from `public/data/parts.json`.
 
 ### Add a part via CLI
 
@@ -53,11 +37,7 @@ npm run parts:add -- \
   --imageUrl "https://picsum.photos/seed/9950x/400/300"
 ```
 
-Force re-seed (wipes and reloads catalog):
-
-```bash
-npm run api:seed
-```
+This appends to `public/data/parts.json`. Commit and redeploy for GitHub Pages to pick up the change (the browser cannot write the repo file).
 
 ## Stack
 
@@ -66,26 +46,16 @@ npm run api:seed
 - Angular Material (azure-blue theme)
 - Angular PWA (`@angular/pwa` + `ngsw-config.json`)
 - Signal Forms (`@angular/forms/signals`) for catalog filters
-- **Local API:** Express + `better-sqlite3` (single file under `server/data/`, gitignored)
-- **MSW** for `/api/parts` when running the static GitHub Pages build (`environment.useMsw: true`)
+- **`public/data/parts.json`** — single source of truth for the catalog
+- **MSW** always on — mocks `GET /api/parts`, `GET /api/parts/:id`, `GET /api/categories` by loading that JSON
 
-## API contract
-
-Same shapes for Express and MSW:
+## API contract (MSW)
 
 - `GET /api/parts?category=&brand=&q=&maxPrice=` → `{ items: Part[], total: number }`
 - `GET /api/parts/:id` → `Part`
 - `GET /api/categories` → `{ counts: Record<string, number> }`
-- `POST /api/parts` (local API / CLI) → created `Part`
 
-## Dev vs Pages
-
-| Mode | Data source | How |
-|------|-------------|-----|
-| `ng serve` (development) | Express + SQLite | `proxy.conf.json` → `localhost:3000`; `useMsw: false` |
-| GitHub Pages / production build | MSW in the browser | `useMsw: true`; no backend on static hosting |
-
-Worker URL is resolved from `document.baseURI` so MSW works under the `/pc-forge/` Pages base path.
+Writes go through the CLI (`npm run parts:add`), not HTTP.
 
 ## Deploy to GitHub Pages
 
@@ -100,34 +70,29 @@ npm run deploy:pages
 
 `build:pages` sets `baseHref` to `/pc-forge/` and copies `index.html` → `404.html` for SPA deep links. `deploy:pages` publishes `dist/pc-forge/browser` to the `gh-pages` branch.
 
-Until a public API exists, the Pages build continues to use MSW with the mock catalog in `src/mocks/`.
+After deploy, Pages serves the same `data/parts.json` catalog that local MSW uses.
 
 ## Folder overview
 
 ```
-server/           # Express + SQLite API, seed, CLI
-  data/           # pc-forge.db (gitignored)
-  cli/add-part.mjs
+public/data/parts.json   # catalog source of truth
+scripts/add-part.mjs     # CLI to append parts
 src/app/
-  core/           # models, category config, PartsService, BuildService
-  shared/         # part-card, price pipe
-  layout/shell/   # responsive app shell (header + main + footer)
+  core/                  # models, category config, PartsService, BuildService
+  shared/                # part-card, price pipe
+  layout/shell/          # responsive app shell (header + main + footer)
   features/
-    home/         # landing
-    builder/      # category nav, catalog, filters, live summary
-src/environments/ # useMsw flag (dev off / prod on)
-src/mocks/        # MSW handlers + catalog (Pages)
-public/           # PWA icons, manifest, MSW worker
-proxy.conf.json   # /api → localhost:3000
+    home/                # landing
+    builder/             # category nav, catalog, filters, live summary
+src/mocks/               # MSW handlers (load parts.json)
+public/                  # PWA icons, manifest, MSW worker, data/
 ```
 
 ## Scripts
 
 ```bash
-npm run api           # start Express + SQLite on :3000
-npm run api:seed      # wipe + re-seed SQLite catalog
-npm run parts:add     # CLI insert a part
-npm start             # Angular dev server (with /api proxy)
+npm start             # Angular dev server (MSW serves /api from parts.json)
+npm run parts:add     # CLI append a part to public/data/parts.json
 ng build              # production build
 npm run build:pages   # production build for GitHub Pages (/pc-forge/ + 404.html)
 npm run deploy:pages  # build:pages then publish to gh-pages
@@ -139,4 +104,3 @@ ng test               # unit tests (Vitest)
 - GPU is optional when the selected CPU has integrated graphics.
 - Basic compatibility checks: CPU↔motherboard socket, RAM type, cooler/GPU fit vs case, PSU headroom.
 - Part `imageUrl` values are placeholders (`picsum.photos` seeds); replace with real assets later.
-- Do not commit `server/data/*.db` or secrets.

@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /**
- * Insert a part into the local SQLite DB.
+ * Append a part to public/data/parts.json (source of truth).
  *
  * Usage:
  *   npm run parts:add -- --category cpu --brand AMD --name "Ryzen 9 9950X" --price 549 \
  *     --specs '{"socket":"AM5","cores":16}' --imageUrl "https://..."
  */
-import { openDb, insertPart, rowToPart } from '../db.mjs';
-import { seedIfEmpty } from '../seed.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const PARTS_PATH = join(__dirname, '..', 'public', 'data', 'parts.json');
 
 function parseArgs(argv) {
   const out = {};
@@ -83,7 +87,7 @@ let specs = {};
 if (args.specs) {
   try {
     specs = JSON.parse(args.specs);
-  } catch (e) {
+  } catch {
     console.error('Error: --specs must be valid JSON');
     process.exit(1);
   }
@@ -93,14 +97,25 @@ const id = args.id || `${category}-${slugify(name)}`;
 const imageUrl =
   args.imageUrl || `https://picsum.photos/seed/${encodeURIComponent(id)}/400/300`;
 
-const db = openDb();
-seedIfEmpty(db);
+let parts;
+try {
+  parts = JSON.parse(readFileSync(PARTS_PATH, 'utf8'));
+} catch (e) {
+  console.error(`Error: could not read ${PARTS_PATH}:`, e.message);
+  process.exit(1);
+}
 
-if (db.prepare('SELECT 1 FROM parts WHERE id = ?').get(id)) {
+if (!Array.isArray(parts)) {
+  console.error('Error: parts.json must be a JSON array');
+  process.exit(1);
+}
+
+if (parts.some((p) => p.id === id)) {
   console.error(`Error: part id already exists: ${id}`);
   process.exit(1);
 }
 
-const created = insertPart(db, { id, category, name, brand, price, specs, imageUrl });
+const created = { id, category, name, brand, price, specs, imageUrl };
+parts.push(created);
+writeFileSync(PARTS_PATH, JSON.stringify(parts, null, 2) + '\n');
 console.log(JSON.stringify(created, null, 2));
-db.close();

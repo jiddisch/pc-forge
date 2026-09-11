@@ -1,6 +1,18 @@
 import { http, HttpResponse, delay } from 'msw';
-import { MOCK_PARTS } from './data/parts';
-import { PartCategory } from '../app/core/models/part.model';
+import { Part, PartCategory } from '../app/core/models/part.model';
+
+let partsCache: Part[] | null = null;
+
+async function loadParts(): Promise<Part[]> {
+  if (partsCache) return partsCache;
+  const url = new URL('data/parts.json', document.baseURI).toString();
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to load parts catalog (${res.status})`);
+  }
+  partsCache = (await res.json()) as Part[];
+  return partsCache;
+}
 
 export const handlers = [
   http.get('/api/parts', async ({ request }) => {
@@ -11,7 +23,7 @@ export const handlers = [
     const q = url.searchParams.get('q')?.toLowerCase();
     const maxPrice = url.searchParams.get('maxPrice');
 
-    let results = [...MOCK_PARTS];
+    let results = [...(await loadParts())];
 
     if (category) {
       results = results.filter((p) => p.category === category);
@@ -42,7 +54,8 @@ export const handlers = [
 
   http.get('/api/parts/:id', async ({ params }) => {
     await delay(100);
-    const part = MOCK_PARTS.find((p) => p.id === params['id']);
+    const parts = await loadParts();
+    const part = parts.find((p) => p.id === params['id']);
     if (!part) {
       return HttpResponse.json({ message: 'Part not found' }, { status: 404 });
     }
@@ -51,7 +64,8 @@ export const handlers = [
 
   http.get('/api/categories', async () => {
     await delay(50);
-    const counts = MOCK_PARTS.reduce<Record<string, number>>((acc, p) => {
+    const parts = await loadParts();
+    const counts = parts.reduce<Record<string, number>>((acc, p) => {
       acc[p.category] = (acc[p.category] ?? 0) + 1;
       return acc;
     }, {});
