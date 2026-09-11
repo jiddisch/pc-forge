@@ -6,12 +6,11 @@
       </h2>
       <div class="flex lg:flex-col gap-1 overflow-x-auto pb-1 lg:pb-0">
         @for (cat of categories; track cat.id) {
-          <button
-            type="button"
-            class="category-btn flex items-center gap-2 min-w-max lg:min-w-0 rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-100 transition"
-            [class.active]="activeCategory() === cat.id"
+          <a
+            [routerLink]="['/builder', cat.id]"
+            routerLinkActive="active"
+            class="category-btn flex items-center gap-2 min-w-max lg:min-w-0 rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-100 transition no-underline text-inherit"
             [class.filled]="build.slots()[cat.id]"
-            (click)="setCategory(cat.id)"
           >
             <mat-icon class="!text-xl">{{ cat.icon }}</mat-icon>
             <span class="flex-1 font-medium">{{ cat.label }}</span>
@@ -21,7 +20,7 @@
             @if (build.slots()[cat.id]; as selected) {
               <mat-icon class="!text-base text-emerald-600">check_circle</mat-icon>
             }
-          </button>
+          </a>
         }
       </div>
     </mat-card>

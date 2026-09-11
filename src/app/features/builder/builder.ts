@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { form, FormField } from '@angular/forms/signals';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { switchMap, catchError, of, startWith } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -16,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CATEGORY_META } from '../../core/config/categories';
-import { Part, PartCategory } from '../../core/models/part.model';
+import { ALL_CATEGORIES, Part, PartCategory } from '../../core/models/part.model';
 import { BuildService } from '../../core/services/build.service';
 import { PartsService } from '../../core/services/parts.service';
 import { PartCard } from '../../shared/part-card/part-card';
@@ -35,6 +36,8 @@ import { PricePipe } from '../../shared/pipes/price.pipe';
     MatSnackBarModule,
     PartCard,
     PricePipe,
+    RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './builder.html',
   styleUrl: './builder.css',
@@ -43,6 +46,8 @@ export class Builder {
   private readonly partsService = inject(PartsService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   protected readonly build = inject(BuildService);
   protected readonly categories = CATEGORY_META;
@@ -67,6 +72,17 @@ export class Builder {
   );
 
   constructor() {
+    this.route.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => {
+        const value = params.get('category');
+        if (value && (ALL_CATEGORIES as readonly string[]).includes(value)) {
+          this.activeCategory.set(value as PartCategory);
+          return;
+        }
+        void this.router.navigate(['/builder', 'cpu'], { replaceUrl: true });
+      });
+
     const reload$ = toObservable(
       computed(() => ({
         category: this.activeCategory(),
@@ -95,11 +111,6 @@ export class Builder {
         this.parts.set(res.items);
         this.loading.set(false);
       });
-
-  }
-
-  protected setCategory(category: PartCategory): void {
-    this.activeCategory.set(category);
   }
 
   protected onSelect(part: Part): void {

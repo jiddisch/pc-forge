@@ -21,7 +21,7 @@ npm start
 Open http://localhost:4200/
 
 - Home: landing overview
-- Builder: pick parts by category, filter with signal forms, see live total + compatibility hints
+- Builder: pick parts by category (`/builder/cpu`, `/builder/gpu`, …), filter with signal forms, see live total + compatibility hints
 
 MSW is always enabled (local and production). It serves `/api/*` from `public/data/parts.json`.
 
