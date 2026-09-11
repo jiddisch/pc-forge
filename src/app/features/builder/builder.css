@@ -1,0 +1,8 @@
+.category-btn.active {
+  background: color-mix(in srgb, var(--mat-sys-primary, #1a73e8) 12%, white);
+  color: var(--mat-sys-primary, #1a73e8);
+}
+
+.category-btn.filled:not(.active) {
+  background: #f0fdf4;
+}

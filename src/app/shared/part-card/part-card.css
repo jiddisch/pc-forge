@@ -1,0 +1,4 @@
+.part-card.selected {
+  outline: 2px solid var(--mat-sys-primary, #1a73e8);
+  outline-offset: 2px;
+}

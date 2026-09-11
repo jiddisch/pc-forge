@@ -1,0 +1,34 @@
+<mat-card class="part-card h-full flex flex-col overflow-hidden" [class.selected]="selected()">
+  <img
+    mat-card-image
+    class="h-40 w-full object-cover bg-slate-100"
+    [src]="part().imageUrl"
+    [alt]="part().name"
+    loading="lazy"
+  />
+  <mat-card-header class="!px-4 !pt-3">
+    <mat-card-title class="!text-base !leading-snug">{{ part().name }}</mat-card-title>
+    <mat-card-subtitle>{{ part().brand }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="!px-4 flex-1">
+    <p class="text-xl font-semibold text-sky-700 my-2">{{ part().price | price }}</p>
+    <div class="flex flex-wrap gap-1">
+      @for (spec of specEntries(); track spec.key) {
+        <mat-chip class="!min-h-7 !text-xs">{{ spec.key }}: {{ spec.value }}</mat-chip>
+      }
+    </div>
+  </mat-card-content>
+  <mat-card-actions class="!px-4 !pb-4 !pt-0">
+    @if (selected()) {
+      <button mat-stroked-button color="warn" type="button" (click)="clearPart.emit(part())">
+        <mat-icon>remove_circle</mat-icon>
+        Clear
+      </button>
+    } @else {
+      <button mat-flat-button color="primary" type="button" (click)="selectPart.emit(part())">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Select
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

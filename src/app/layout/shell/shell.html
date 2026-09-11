@@ -1,0 +1,30 @@
+<div class="min-h-full flex flex-col bg-slate-50">
+  <mat-toolbar color="primary" class="!px-3 sm:!px-6 shadow-md sticky top-0 z-40">
+    <a routerLink="/" class="flex items-center gap-2 text-inherit no-underline font-medium">
+      <mat-icon>construction</mat-icon>
+      <span class="text-lg tracking-tight">PC Forge</span>
+    </a>
+    <span class="flex-1"></span>
+    <nav class="flex items-center gap-1">
+      <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+      <a mat-button routerLink="/builder" routerLinkActive="active-link">
+        Builder
+      </a>
+    </nav>
+    <div class="hidden sm:flex items-center gap-2 ml-3 pl-3 border-l border-white/30">
+      <mat-icon class="!text-xl">shopping_cart</mat-icon>
+      <span class="text-sm font-medium">{{ build.totalPrice() | price }}</span>
+      <span class="text-xs opacity-80">({{ build.selectedCount() }})</span>
+    </div>
+  </mat-toolbar>
+
+  <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+    <router-outlet />
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white py-4 text-center text-sm text-slate-500">
+    PC Forge — build your desktop PC. Base components only.
+  </footer>
+</div>

@@ -1,0 +1,154 @@
+<div class="grid gap-4 lg:grid-cols-[240px_1fr_280px] xl:grid-cols-[260px_1fr_300px]">
+  <aside class="lg:sticky lg:top-20 lg:self-start">
+    <mat-card class="!p-3">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-2 px-1">
+        Components
+      </h2>
+      <div class="flex lg:flex-col gap-1 overflow-x-auto pb-1 lg:pb-0">
+        @for (cat of categories; track cat.id) {
+          <button
+            type="button"
+            class="category-btn flex items-center gap-2 min-w-max lg:min-w-0 rounded-lg px-3 py-2 text-left text-sm hover:bg-slate-100 transition"
+            [class.active]="activeCategory() === cat.id"
+            [class.filled]="build.slots()[cat.id]"
+            (click)="setCategory(cat.id)"
+          >
+            <mat-icon class="!text-xl">{{ cat.icon }}</mat-icon>
+            <span class="flex-1 font-medium">{{ cat.label }}</span>
+            @if (cat.optional) {
+              <span class="text-[10px] uppercase text-slate-400">Opt</span>
+            }
+            @if (build.slots()[cat.id]; as selected) {
+              <mat-icon class="!text-base text-emerald-600">check_circle</mat-icon>
+            }
+          </button>
+        }
+      </div>
+    </mat-card>
+  </aside>
+
+  <section class="space-y-4 min-w-0">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">{{ activeMeta().label }}</h1>
+        <p class="text-slate-600 text-sm">{{ activeMeta().description }}</p>
+        @if (activeCategory() === 'gpu' && build.hasIntegratedGraphics()) {
+          <p class="text-xs text-emerald-700 mt-1">
+            Your CPU has integrated graphics — a discrete GPU is optional.
+          </p>
+        }
+      </div>
+      @if (selectedForCategory(); as selected) {
+        <button mat-stroked-button type="button" (click)="clearSlot(activeCategory())">
+          <mat-icon>clear</mat-icon>
+          Clear {{ activeMeta().label }}
+        </button>
+      }
+    </div>
+
+    <mat-card class="!p-3 sm:!p-4">
+      <form class="grid gap-3 sm:grid-cols-[1fr_140px_auto] items-end" (submit)="$event.preventDefault()">
+        <mat-form-field appearance="outline" class="w-full !mb-0" subscriptSizing="dynamic">
+          <mat-label>Search</mat-label>
+          <input matInput type="search" [formField]="filterForm.q" placeholder="Name, brand, spec…" />
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full !mb-0" subscriptSizing="dynamic">
+          <mat-label>Max price</mat-label>
+          <input matInput type="number" [formField]="filterForm.maxPrice" />
+          <span matTextPrefix>$&nbsp;</span>
+        </mat-form-field>
+        <button mat-button type="button" (click)="clearFilters()">Reset</button>
+      </form>
+    </mat-card>
+
+    @if (loading()) {
+      <div class="flex justify-center py-16">
+        <mat-spinner diameter="40" />
+      </div>
+    } @else if (error()) {
+      <mat-card class="!p-6 text-center text-red-700">{{ error() }}</mat-card>
+    } @else if (parts().length === 0) {
+      <mat-card class="!p-8 text-center text-slate-500">No parts match your filters.</mat-card>
+    } @else {
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        @for (part of parts(); track part.id) {
+          <app-part-card
+            [part]="part"
+            [selected]="build.isSelected(part)"
+            (selectPart)="onSelect($event)"
+            (clearPart)="onClear($event)"
+          />
+        }
+      </div>
+    }
+  </section>
+
+  <aside class="lg:sticky lg:top-20 lg:self-start order-first lg:order-none">
+    <mat-card class="!p-4 space-y-3">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="text-lg font-semibold">Your build</h2>
+        <button mat-button type="button" color="warn" (click)="build.clearAll()" [disabled]="build.selectedCount() === 0">
+          Reset
+        </button>
+      </div>
+
+      <ul class="space-y-2 text-sm">
+        @for (cat of categories; track cat.id) {
+          <li class="flex gap-2 items-start border-b border-slate-100 pb-2 last:border-0">
+            <mat-icon class="!text-lg text-slate-400 mt-0.5">{{ cat.icon }}</mat-icon>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between gap-2">
+                <span class="font-medium text-slate-700">{{ cat.label }}</span>
+                @if (build.slots()[cat.id]; as part) {
+                  <span class="shrink-0 text-sky-700 font-medium">{{ part.price | price }}</span>
+                }
+              </div>
+              @if (build.slots()[cat.id]; as part) {
+                <p class="truncate text-slate-500">{{ part.name }}</p>
+              } @else {
+                <p class="text-slate-400 italic">
+                  @if (cat.optional) { Optional } @else { Not selected }
+                </p>
+              }
+            </div>
+            @if (build.slots()[cat.id]) {
+              <button mat-icon-button type="button" aria-label="Clear slot" (click)="clearSlot(cat.id)">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+          </li>
+        }
+      </ul>
+
+      <div class="rounded-xl bg-sky-50 border border-sky-100 px-3 py-3 flex items-center justify-between">
+        <span class="font-semibold text-slate-800">Total</span>
+        <span class="text-xl font-bold text-sky-800">{{ build.totalPrice() | price }}</span>
+      </div>
+
+      @if (build.issues().length) {
+        <div class="space-y-2">
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Compatibility</h3>
+          @for (issue of build.issues(); track issue.message) {
+            <div
+              class="rounded-lg px-3 py-2 text-xs"
+              [class.bg-amber-50]="issue.severity === 'warning'"
+              [class.text-amber-900]="issue.severity === 'warning'"
+              [class.bg-red-50]="issue.severity === 'error'"
+              [class.text-red-800]="issue.severity === 'error'"
+            >
+              {{ issue.message }}
+            </div>
+          }
+        </div>
+      }
+
+      @if (build.isComplete()) {
+        <div class="rounded-lg bg-emerald-50 text-emerald-800 text-sm px-3 py-2 flex items-center gap-2">
+          <mat-icon class="!text-base">verified</mat-icon>
+          Build looks complete
+        </div>
+      }
+    </mat-card>
+  </aside>
+</div>
