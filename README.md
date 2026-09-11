@@ -2,6 +2,8 @@
 
 Angular web app for building a desktop PC from base components (CPU, motherboard, memory, storage, optional GPU, PSU, case, cooling).
 
+**Live demo (GitHub Pages):** https://jiddisch.github.io/pc-forge/
+
 ## Requirements
 
 - **Node.js 22.22.3+** (verified with v22.22.3)
@@ -41,12 +43,36 @@ Open http://localhost:4200/
 - Handlers live in `src/mocks/` (`handlers.ts`, `browser.ts`, `data/parts.ts`)
 - Worker script: `public/mockServiceWorker.js` (generated via `npx msw init public/`)
 - `src/main.ts` starts the worker before bootstrapping the app
+- Worker URL is resolved from `document.baseURI` so it works under the `/pc-forge/` Pages base path
 - API shape (ready for a real backend later):
   - `GET /api/parts?category=cpu&q=&maxPrice=`
   - `GET /api/parts/:id`
   - `GET /api/categories`
 
 In production builds the worker still starts in the browser when the app boots; swap `PartsService` to a real API when ready and remove or gate the MSW import.
+
+## Deploy to GitHub Pages
+
+Site URL: **https://jiddisch.github.io/pc-forge/**
+
+One-time repo setup: GitHub → Settings → Pages → Source = **Deploy from a branch** → Branch **`gh-pages`** / **/ (root)**.
+
+Build (sets `baseHref` to `/pc-forge/`, copies `index.html` → `404.html` for SPA deep links):
+
+```bash
+export PATH="/home/box/.local/node/bin:$PATH"
+cd /workspace/pc-forge
+npm run build:pages
+```
+
+Publish the browser output to the `gh-pages` branch (SSH remote):
+
+```bash
+npx angular-cli-ghpages --dir=dist/pc-forge/browser --no-silent
+# or: npm run deploy:pages
+```
+
+Then push any source changes on `main` as usual.
 
 ## Folder overview
 
@@ -67,6 +93,8 @@ public/           # PWA icons, manifest, MSW worker
 ```bash
 ng serve          # dev server
 ng build          # production build
+npm run build:pages   # production build for GitHub Pages (/pc-forge/ + 404.html)
+npm run deploy:pages  # build:pages then publish to gh-pages
 ng test           # unit tests (Vitest)
 ```
 

@@ -8,7 +8,8 @@ async function prepareApp() {
     await worker.start({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
-        url: '/mockServiceWorker.js',
+        // Resolve against <base href> so MSW works under /pc-forge/ on GitHub Pages
+        url: new URL('mockServiceWorker.js', document.baseURI).toString(),
       },
     });
   }

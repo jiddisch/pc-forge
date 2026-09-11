@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:pages": "ng build --configuration=production --base-href=/pc-forge/ && cp dist/pc-forge/browser/index.html dist/pc-forge/browser/404.html",
+    "deploy:pages": "npm run build:pages && npx angular-cli-ghpages --dir=dist/pc-forge/browser --no-silent"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
